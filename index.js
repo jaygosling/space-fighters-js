@@ -41,10 +41,13 @@ for (let x of invadersPos) {
 var invaders = document.getElementsByClassName('invader')
 
 function checkInvader() {
-    if(bulletPos in invadersPos) {
-        return invadersPos.indexOf(bulletPos)
-    } else {
+    console.log("invadersPos", invadersPos, "bulletPos", bulletPos)
+    var check = invadersPos.indexOf(bulletPos)
+    
+    if(check == -1) {
         return false
+    } else {
+        return check
     }
 }
 
@@ -53,19 +56,30 @@ function checkInvader() {
 function shoot() {
     console.log("entra en shoot")
     var bullet = document.getElementById('bullet');
+    board[bulletPos].removeChild(bullet)
+    bulletPos-=10
+    board[bulletPos].appendChild(bullet)
     var hit = checkInvader()
+    console.log(hit)
     if (hit) {
-        board[bulletPos].removeChild(bullet)
-        invader[hit].classList.add('d-none')
         console.log("HIT")
+        board[bulletPos].removeChild(bullet)
+        console.log(invader[hit])
+        invaders[hit].classList.add('d-none')
+        invadersPos[hit] = 0
+        bulletPos = 0
     } else {
         console.log("NOT HIT")
-        bullet[bulletPos].removeChild(bullet)
-        bullet-=10
-        bullet[bulletPos].appendChild(bullet)
     }
 }
 
+var button = document.createElement("button")
+button.addEventListener('click', debugBtn)
+myApp.appendChild(button)
+
+function debugBtn() {
+    shoot();
+}
 function moveShip(event) {
     if (event.key == "ArrowLeft") {
         if (shipPos != 90) {
@@ -90,17 +104,18 @@ function moveShip(event) {
         bullet.id = 'bullet'
         bulletPos = shipPos-10
         board[bulletPos].appendChild(bullet)
-        /*while(bulletPos > 0){
-            var steps = setTimeout(shoot, 1000)
-        }*/
+        while(bulletPos > 0){
+            console.log("Entra en el while")
+            //setTimeout(shoot, 1000);
+        }
     }
 }
 
 window.addEventListener('keydown', moveShip)
 
 
-var app = angular.module('MyApp', []);
+/*var app = angular.module('MyApp', []);
 app.controller('myCtrl', function ($scope) {
 
 }
-)
+)*/
