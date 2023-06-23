@@ -61,7 +61,7 @@ function shoot() {
     board[bulletPos].appendChild(bullet)
     var hit = checkInvader()
     console.log(hit)
-    if (hit) {
+    if (hit !== false) {
         console.log("HIT")
         board[bulletPos].removeChild(bullet)
         console.log(invader[hit])
@@ -80,7 +80,7 @@ myApp.appendChild(button)
 function debugBtn() {
     shoot();
 }
-function moveShip(event) {
+function keyHandle(event) {
     if (event.key == "ArrowLeft") {
         if (shipPos != 90) {
             board[shipPos].removeChild(spaceship)
@@ -107,12 +107,13 @@ function moveShip(event) {
         while(bulletPos > 0){
             console.log("Entra en el while")
             //setTimeout(shoot, 1000);
+            //clearTimeout();
+            shoot()
         }
     }
 }
 
-window.addEventListener('keydown', moveShip)
-
+window.addEventListener('keydown', keyHandle)
 
 /*var app = angular.module('MyApp', []);
 app.controller('myCtrl', function ($scope) {
