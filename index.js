@@ -23,20 +23,32 @@ for (let i = 0; i < 10; i++) {
 
 var board = document.getElementsByClassName("squares");
 var spaceship = document.createElement("img")
+var scoreboard = document.createElement("div")
 
 spaceship.src = "cohete.png"
 spaceship.style.height = "50px"
 spaceship.style.width = "50px"
+
+scoreboard.classList.add("score")
+scoreboard.innerHTML = score.toString().padStart(5, "0")
+scoreboard.style.position = "relative"
+scoreboard.style.left = "40px"
+scoreboard.style.top = "15px"
+board[0].appendChild(scoreboard)
+
 board[shipPos].appendChild(spaceship)
 
-for (let x of invadersPos) {
-    var invader = document.createElement("img")
-    invader.src = "ovni.png"
-    invader.style.height = "50px"
-    invader.style.width = "50px"
-    invader.classList.add('invader')
-    board[x].appendChild(invader)
+function drawInvaders() {
+    for (let x of invadersPos) {
+        var invader = document.createElement("img")
+        invader.src = "ovni.png"
+        invader.style.height = "50px"
+        invader.style.width = "50px"
+        invader.classList.add('invader')
+        board[x].appendChild(invader)
+    }
 }
+drawInvaders()
 
 var invaders = document.getElementsByClassName('invader')
 
@@ -51,8 +63,6 @@ function checkInvader() {
     }
 }
 
-
-
 function shoot() {
     console.log("entra en shoot")
     var bullet = document.getElementById('bullet');
@@ -66,6 +76,8 @@ function shoot() {
         board[bulletPos].removeChild(bullet)
         console.log(invader[hit])
         invaders[hit].classList.add('d-none')
+        score+=100
+        scoreboard.innerHTML = score.toString().padStart(5, "0")
         invadersPos[hit] = 0
         bulletPos = 0
     } else {
@@ -73,13 +85,18 @@ function shoot() {
     }
 }
 
+/* DEBUG BUTTON
+
 var button = document.createElement("button")
 button.addEventListener('click', debugBtn)
 myApp.appendChild(button)
 
+*/
+
 function debugBtn() {
     shoot();
 }
+
 function keyHandle(event) {
     if (event.key == "ArrowLeft") {
         if (shipPos != 90) {
@@ -115,8 +132,8 @@ function keyHandle(event) {
 
 window.addEventListener('keydown', keyHandle)
 
-/*var app = angular.module('MyApp', []);
+var app = angular.module('MyApp', []);
 app.controller('myCtrl', function ($scope) {
 
 }
-)*/
+)
